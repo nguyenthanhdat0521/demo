@@ -1,0 +1,724 @@
+<!-- saved from url=(0087)http://groups.engin.umd.umich.edu/CIS/course.des/cis525/js/f00/artan/functionpoints.htm -->
+<html data-ember-extension="1">
+  <script id="tinyhippos-injected">
+    if (window.top.ripple) {
+      window.top.ripple("bootstrap").inject(window, document);
+    }
+  </script>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+    <meta name="GENERATOR" content="Microsoft FrontPage 4.0" />
+    <meta name="ProgId" content="FrontPage.Editor.Document" />
+    <meta
+      name="keywords"
+      content="software engineering, metrics, function points"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <meta
+      name="descriptin"
+      content="Function-oriented software metrics use function points as a measure of 
+the functionality delivered by the aplication"
+    />
+   
+    <title>Function Point</title>
+    <link rel="stylesheet" href="stylesheet/index.css" />
+    <script language="JavaScript">
+      function clearStatus() {
+        status = "";
+      }
+      function promptInputs() {
+        status = "Number of User Inputs";
+      }
+      function promptOutputs() {
+        status = "Number of User Outputs";
+      }
+      function promptInquiries() {
+        status = "Number of User Inquiries";
+      }
+      function promptFiles() {
+        status = "Number of Files";
+      }
+      function promptInterfaces() {
+        status = "Number of External Interfaces";
+      }
+
+      // In JavaScript 1.1, parseInt returns NaN (recognizable via isNaN() for non-integers. But JavaScript 1.0
+      // returns 0 and doesn't have an isNaN routine. Since comparisons to NaN always fail, the > 0 test
+      // works on either version.
+
+      function isInt(string) {
+        var val = parseInt(string);
+        return val > 0;
+      } // isInt()
+
+      // Three tests:
+      // 1) userInputs, userOutputs, userInquiries, numberFiles, and externalInterfaces are an integer.
+      // 2) Weighting factor is not missing.
+      // 3) Rating for each factor should be in a range from 0 to 5.
+      // If any of the tests fails, calculation is canceled.
+
+      function checkDataEntry() {
+        var userInputs = document.mainForm.userInputs;
+        if (!isInt(userInputs.value) && userInputs.value != 0) {
+          alert(
+            "Number of user inputs must be an integer.\n '" +
+              userInputs.value +
+              "' is not."
+          );
+          return false;
+        } //if
+        var userOutputs = document.mainForm.userOutputs;
+        if (!isInt(userOutputs.value) && userOutputs.value != 0) {
+          alert(
+            "Number of user outputs must be an integer.\n '" +
+              userOutputs.value +
+              "' is not."
+          );
+          return false;
+        } //if
+        var userInquiries = document.mainForm.userInquiries;
+        if (!isInt(userInquiries.value) && userInquiries.value != 0) {
+          alert(
+            "Number of user inquiries must be an integer.\n '" +
+              userInquiries.value +
+              "' is not."
+          );
+          return false;
+        } //if
+        var numberFiles = document.mainForm.numberFiles;
+        if (!isInt(numberFiles.value) && numberFiles.value != 0) {
+          alert(
+            "Number of files must be an integer.\n '" +
+              numberFiles.value +
+              "' is not."
+          );
+          return false;
+        } //if
+        var externalInterfaces = document.mainForm.externalInterfaces;
+        if (!isInt(externalInterfaces.value) && externalInterfaces.value != 0) {
+          alert(
+            "Number of external interfaces must be an integer.\n '" +
+              externalInterfaces.value +
+              "' is not."
+          );
+          return false;
+        } //if
+        // Check if the rating for each factor is in the range from 0 to 5
+        for (var i = 0; i < 14; i++)
+          if (mainForm.F1[i].value < "0" || mainForm.F1[i].value > "5") {
+            j = i + 1;
+            alert(
+              "Rating for F" +
+                j +
+                " must be a number from 0 to 5.\n '" +
+                mainForm.F1[i].value +
+                "' is not."
+            );
+            return false;
+          } //if
+      } //checkDataEntry
+
+      function calculate() {
+        // If data entry looks OK, calculate form.
+        var countTotal = 0,
+          factorTotal = 0;
+
+        // calculate countTotal
+        if (mainForm.userInputsWeight[0].checked)
+          mainForm.T1.value = 3 * mainForm.userInputs.value;
+        if (mainForm.userInputsWeight[1].checked)
+          mainForm.T1.value = 4 * mainForm.userInputs.value;
+        if (mainForm.userInputsWeight[2].checked)
+          mainForm.T1.value = 6 * mainForm.userInputs.value;
+        countTotal = countTotal + parseInt(mainForm.T1.value);
+
+        if (mainForm.userOutputsWeight[0].checked)
+          mainForm.T2.value = 4 * mainForm.userOutputs.value;
+        if (mainForm.userOutputsWeight[1].checked)
+          mainForm.T2.value = 5 * mainForm.userOutputs.value;
+        if (mainForm.userOutputsWeight[2].checked)
+          mainForm.T2.value = 7 * mainForm.userOutputs.value;
+        countTotal = countTotal + parseInt(mainForm.T2.value);
+
+        if (mainForm.userInquiriesWeight[0].checked)
+          mainForm.T3.value = 3 * mainForm.userInquiries.value;
+        if (mainForm.userInquiriesWeight[1].checked)
+          mainForm.T3.value = 4 * mainForm.userInquiries.value;
+        if (mainForm.userInquiriesWeight[2].checked)
+          mainForm.T3.value = 6 * mainForm.userInquiries.value;
+        countTotal = countTotal + parseInt(mainForm.T3.value);
+
+        if (mainForm.numberFilesWeight[0].checked)
+          mainForm.T4.value = 7 * mainForm.numberFiles.value;
+        if (mainForm.numberFilesWeight[1].checked)
+          mainForm.T4.value = 10 * mainForm.numberFiles.value;
+        if (mainForm.numberFilesWeight[2].checked)
+          mainForm.T4.value = 15 * mainForm.numberFiles.value;
+        countTotal = countTotal + parseInt(mainForm.T4.value);
+
+        if (mainForm.externalInterfacesWeight[0].checked)
+          mainForm.T5.value = 5 * mainForm.externalInterfaces.value;
+        if (mainForm.externalInterfacesWeight[1].checked)
+          mainForm.T5.value = 7 * mainForm.externalInterfaces.value;
+        if (mainForm.externalInterfacesWeight[2].checked)
+          mainForm.T5.value = 10 * mainForm.externalInterfaces.value;
+        countTotal = countTotal + parseInt(mainForm.T5.value);
+
+        mainForm.Total.value = countTotal; // Put the sum onto the 'Total' field
+
+        // calculate the sum of the factor rates
+        for (var i = 0; i < 14; i++)
+          factorTotal = factorTotal + parseInt(mainForm.F1[i].value);
+
+        // calculate the final result
+        mainForm.Result.value =
+          parseInt(countTotal * (0.65 + 0.01 * factorTotal)) + " FP";
+      } // calculate
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+    <script language="JavaScript1.1">
+      function generateInfo(mode) {
+        if (mode == 1)
+          infoWindow1 = window.open(
+            "userinputs.html",
+            "info1Window",
+            "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no"
+          );
+        if (mode == 2)
+          infoWindow2 = window.open(
+            "useroutputs.html",
+            "info2Window",
+            "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no"
+          );
+        if (mode == 3)
+          infoWindow3 = window.open(
+            "userinquiries.html",
+            "info3Window",
+            "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no"
+          );
+        if (mode == 4)
+          infoWindow3 = window.open(
+            "numberfiles.html",
+            "info4Window",
+            "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no"
+          );
+        if (mode == 5)
+          infoWindow3 = window.open(
+            "externalinterfaces.html",
+            "info5Window",
+            "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no"
+          );
+      } // generateInfo
+    </script>
+  </head>
+
+  <body>
+    <nav
+      id="navbar"
+      class="navbar navbar-expand-lg navbar-light bg-light fixed-top"
+    >
+      <div class="container">
+        <a class="navbar-brand navbar_scroll" href="#">Function Point</a>
+        <button
+          id="navbar-toggler"
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          style="border-color: rgba(0,0,0,.5);"
+        >
+          <i id="bar" style="color: rgba(0,0,0,.5);"  class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link navbar_scroll" href="#body_fp"
+                >Function Point Counting</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link navbar_scroll" href="#body_vaf"
+                >Value Adjustment Factor</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="header">
+      <div class="row appearance header_appearance">
+        <div class="col">
+          <img src="images/img-01.png" alt="" class="header_image" />
+        </div>
+        <div class="col d-flex">
+          <div class="m-auto">
+            <p class="header_title">Function Point Count</p>
+            <p class="header_text mb-1">
+              Function points are basic data from which productivity metrics
+              could be computed.
+            </p>
+            <p class="header_text">
+              Function points are used to compute a functional size measurement (FSM) of software. The cost (in dollars or hours) of a single unit is calculated from past projects.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <form class="m-0" name="mainForm">
+        <div id="body_fp"  class="body_fp">
+          <div id="body_fp_content"  class="container hidden">
+            <div class="body_fp_header">
+              <p class="body_fp_header_text">Function Point</p>
+            </div>
+            <div class="body_fp_text">
+              <p class="body_fp_description">
+                Enter a quantity and choose a complexity for each measurement parameter 
+              </p>
+            </div>
+            <table class="table table-hover mb-5">
+              <thead>
+                <tr>
+                  <th scope="col">Measurement Parameter</th>
+                  <th scope="col">Count</th>
+                  <th scope="col">Simple</th>
+                  <th scope="col">Average</th>
+                  <th scope="col">Complex</th>
+                  <th scope="col">Sum</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Number of External Input</td>
+                  <td>
+                    <input
+                      class="form-control w-75"
+                      type="text"
+                      name="userInputs"
+                      onfocus="promptInputs()"
+                      onblur="clearStatus()"
+                      size="6"
+                      value="0"
+                    />
+                  </td>
+                  <td>
+                    <input type="radio" value="3" name="userInputsWeight" /> 3
+                  </td>
+                  <td>
+                    <input
+                      type="radio"
+                      value="4"
+                      name="userInputsWeight"
+                    />
+                    4
+                  </td>
+                  <td>
+                    <input type="radio" value="6" name="userInputsWeight" /> 6
+                  </td>
+                  <td>
+                    <input
+                      class="form-control w-50"
+                      name="T1"
+                      disabled=""
+                      size="6"
+                      value="0"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>Number of External Output</p>
+                  </td>
+                  <td>
+                    <input
+                      class="form-control w-75"
+                      type="text"
+                      name="userOutputs"
+                      onfocus="promptOutputs()"
+                      onblur="clearStatus()"
+                      size="6"
+                      value="0"
+                    />
+                  </td>
+                  <td>
+                    <input type="radio" value="4" name="userOutputsWeight" /> 4
+                  </td>
+                  <td>
+                    <input
+                      type="radio"
+                      value="5"
+                      name="userOutputsWeight"
+                    />
+                    5
+                  </td>
+                  <td>
+                    <input type="radio" value="7" name="userOutputsWeight" /> 7
+                  </td>
+                  <td>
+                    <input
+                      class="form-control w-50"
+                      name="T2"
+                      disabled=""
+                      size="6"
+                      value="0"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>Number of External Inquiries</p>
+                  </td>
+                  <td>
+                    <input
+                      class="form-control w-75"
+                      type="text"
+                      name="userInquiries"
+                      onfocus="promptInquiries()"
+                      onblur="clearStatus()"
+                      size="6"
+                      value="0"
+                    />
+                  </td>
+                  <td>
+                    <input type="radio" value="3" name="userInquiriesWeight" />
+                    3
+                  </td>
+                  <td>
+                    <input
+                      type="radio"
+                      value="4"
+                      name="userInquiriesWeight"
+                    />
+                    4
+                  </td>
+                  <td>
+                    <input type="radio" value="6" name="userInquiriesWeight" />
+                    6
+                  </td>
+                  <td>
+                    <input
+                      class="form-control w-50"
+                      name="T3"
+                      disabled=""
+                      size="6"
+                      value="0"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>Number of Internal Logical File</p>
+                  </td>
+                  <td>
+                    <input
+                      class="form-control w-75"
+                      type="text"
+                      name="numberFiles"
+                      onfocus="promptFiles()"
+                      onblur="clearStatus()"
+                      size="6"
+                      value="0"
+                    />
+                  </td>
+                  <td>
+                    <input type="radio" value="7" name="numberFilesWeight" /> 7
+                  </td>
+                  <td>
+                    <input
+                      type="radio"
+                      value="10"
+                      name="numberFilesWeight"
+                    />
+                    10
+                  </td>
+                  <td>
+                    <input type="radio" value="15" name="numberFilesWeight" />
+                    15
+                  </td>
+                  <td>
+                    <input
+                      class="form-control w-50"
+                      name="T4"
+                      disabled=""
+                      size="6"
+                      value="0"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>Number of External Interface File</p>
+                  </td>
+                  <td>
+                    <input
+                      class="form-control w-75"
+                      type="text"
+                      name="externalInterfaces"
+                      onfocus="promptInterfaces()"
+                      onblur="clearStatus()"
+                      size="6"
+                      value="0"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="radio"
+                      value="5"
+                      name="externalInterfacesWeight"
+                    />
+                    5
+                  </td>
+                  <td>
+                    <input
+                      type="radio"
+                      value="7"
+                      name="externalInterfacesWeight"
+                    />
+                    7
+                  </td>
+                  <td>
+                    <input
+                      type="radio"
+                      value="10"
+                      name="externalInterfacesWeight"
+                    />
+                    10
+                  </td>
+                  <td>
+                    <input
+                      class="form-control w-50"
+                      name="T5"
+                      disabled=""
+                      size="6"
+                      value="0"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="form-inline">
+                      <label for="">Total</label>
+                      <input
+                        class="form-control ml-2"
+                        name="Total"
+                        disabled=""
+                        size="8"
+                        value="0"
+                      />
+                    </div>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div id="body_vaf" class="body_vaf">
+          <div id="body_vaf_content" class="container hidden">
+            <div class="body_fp_header">
+              <p class="body_fp_header_text">Value Adjustment Factor</p>
+            </div>
+            <div class="body_fp_text">
+              <p class="body_fp_description">
+                By clicking on the buttons above more information about the
+                measurement parameters will be available and Rate each factor
+                (Fi, i=1 to 14) on a scale of 0 to 5
+              </p>
+            </div>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Factor</th>
+                  <th scope="col">Scale</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">F1</th>
+                  <td>Does the system require reliable backup and recovery?</td>
+                  <td>
+                    <input class="form-control" name="F1" size="1" value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">F2</th>
+                  <td>Are data communications required?</td>
+                  <td>
+                    <input class="form-control" name="F1" size="1" value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">F3</th>
+                  <td>Are there distributed processing functions?</td>
+                  <td>
+                    <input class="form-control" name="F1" size="1" value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">F4</th>
+                  <td>Is performance critical?</td>
+                  <td>
+                    <input class="form-control" name="F1" size="1" value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">F5</th>
+                  <td>
+                    Will the system run in a existing, heavily utilized
+                    operational environment?
+                  </td>
+                  <td>
+                    <input class="form-control" name="F1" size="1" value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">F6</th>
+                  <td>Does the system require on-line data entry?</td>
+                  <td>
+                    <input class="form-control" name="F1" size="1" value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">F7</th>
+                  <td>
+                    Does the on-line data entry require the input transaction to
+                    be built over multiple screens or operations?
+                  </td>
+                  <td>
+                    <input class="form-control" name="F1" size="1" value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">F8</th>
+                  <td>Are the master files updated on-line?</td>
+                  <td>
+                    <input class="form-control" name="F1" size="1" value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">F9</th>
+                  <td>Are the inputs, outputs, files or inquiries complex?</td>
+                  <td>
+                    <input class="form-control" name="F1" size="1" value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">F10</th>
+                  <td>Is the internal processing complex?</td>
+                  <td>
+                    <input class="form-control" name="F1" size="1" value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">F11</th>
+                  <td>Is the code designed to be reusable?</td>
+                  <td>
+                    <input class="form-control" name="F1" size="1" value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">F12</th>
+                  <td>
+                    Are conversion and installation included in the design?
+                  </td>
+                  <td>
+                    <input class="form-control" name="F1" size="1" value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">F13</th>
+                  <td>
+                    Is the system designed for multiple installations in
+                    different organizations?
+                  </td>
+                  <td>
+                    <input class="form-control" name="F1" size="1" value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">F14</th>
+                  <td>
+                    Is the application designed to facilitate change and ease of
+                    use by the user?
+                  </td>
+                  <td>
+                    <input class="form-control" name="F1" size="1" value="0" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              <input
+                class="btn btn-primary"
+                type="button"
+                value="Calculate"
+                name="B1"
+                onclick="checkDataEntry(); calculate()"
+              />
+              <input
+                class="btn btn-primary"
+                type="reset"
+                value="Reset"
+                name="B2"
+              />
+            </p>
+            <div class="form-inline">
+              <label>Result - According to the input your project has:</label>
+              <input
+                type="text"
+                name="Result"
+                disabled=""
+                size="10"
+                class="form-control ml-3"
+              />
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <p class="footer_text">© All rights reserved by ABC limited</p>
+          </div>
+          <div class="col d-flex justify-content-end">
+            <p class="footer_text">Help</p>
+            <p class="footer_text">Policy</p>
+            <p class="footer_text">Term</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/index.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

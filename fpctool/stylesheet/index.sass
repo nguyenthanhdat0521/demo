@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Seaweed+Script&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@300;500&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Antonio:wght@300&family=Roboto:wght@300&display=swap')
+html,body
+    width: 100%
+    height: 100%
+    // font-family: 'Fraunces', serif
+    font-family: 'Roboto', sans-serif
+    position: absolute
+    scroll-behavior: smooth !important
+.navbar-brand
+    font-family: "Seaweed Script", cursive
+.header
+    width: 100%
+    height: 100%
+    display: flex
+    align-items: center
+    justify-content: center
+    .header_title
+        font-weight: bold
+        font-size: 1.2rem
+        color: #565a5c
+    .header_text
+        font-size: .8rem
+        color: #aaa
+table
+    margin: 50px 0
+.body
+    .body_fp,.body_vaf
+        box-shadow: 0 0 50px rgba(128, 128, 128, 0.5)
+        padding: 50px 0
+        .body_fp_text
+            display: flex
+            justify-content: center
+            .body_fp_description
+                max-width: 60%
+                font-size: .9rem
+                color: #aaa
+                margin: 0
+                font-weight: bold
+        .body_fp_header
+            width: 100%
+            text-align: center
+            .body_fp_header_text
+                font-weight: bold
+                font-size: 30px
+                color: #565a5c
+.appearance
+    animation: appearance 1s
+@keyframes appearance
+  0%
+    opacity: 0
+    transform: translateY(100px)
+  100%
+    opacity: 1
+    transform: translateY(0)
+.navbar
+    background: white !important
+.navbar_bg-scroll
+    background:#1b2740 !important
+.navbar_text-scroll
+    color: white !important
+.hidden
+    display: none
+.footer
+    width: 100%
+    padding: 20px 0
+    background: #2b3445
+    .footer_text
+        color: rgba(255, 255, 255, 0.65)
+        margin: 0 20px 0 0
+        cursor: pointer
+        font-size: .8rem
+.nav-link
+    font-size: .8rem
